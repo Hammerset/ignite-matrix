@@ -17,7 +17,10 @@ const Content = styled.div`
   width: 100%;
 `;
 
-const ButtonWrapper = styled.div``;
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
 
 const Button = styled.button``;
 
@@ -26,6 +29,9 @@ const Home: NextPage = () => {
 
   const createSuppliersMutation =
     api.supplier.createManySuppliers.useMutation();
+
+  const deleteAllSuppliersMutation =
+    api.supplier.deleteAllSuppliers.useMutation();
 
   const handleCreateSuppliers = useCallback(async () => {
     if (!jsonData) return;
@@ -40,7 +46,11 @@ const Home: NextPage = () => {
         };
       })
     );
-  }, [jsonData]);
+  }, [jsonData, createSuppliersMutation]);
+
+  const handleDeleteAllSuppliers = useCallback(async () => {
+    deleteAllSuppliersMutation.mutate();
+  }, [deleteAllSuppliersMutation]);
 
   return (
     <>
@@ -59,6 +69,10 @@ const Home: NextPage = () => {
           <UploadJsonFileButton setJsonData={setJsonData} />
           <Button disabled={!jsonData} onClick={() => handleCreateSuppliers()}>
             Create Suppliers
+          </Button>
+
+          <Button onClick={() => handleDeleteAllSuppliers()}>
+            Delete all suppliers
           </Button>
         </ButtonWrapper>
       </Content>
