@@ -13,5 +13,8 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  compiler: {
+    styledComponents: true,
+  },
 };
 export default config;
