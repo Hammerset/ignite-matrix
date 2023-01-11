@@ -7,6 +7,7 @@
  */
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
+import { createTRPCReact } from "@trpc/react-query";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
@@ -52,6 +53,8 @@ export const api = createTRPCNext<AppRouter>({
    */
   ssr: false,
 });
+
+export const trpc = createTRPCReact<AppRouter>();
 
 /**
  * Inference helper for inputs

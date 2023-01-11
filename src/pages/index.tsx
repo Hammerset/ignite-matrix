@@ -1,11 +1,12 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 
-import { api } from "../utils/api";
+import { api, trpc } from "../utils/api";
 import styled from "styled-components";
 import { useCallback, useState } from "react";
 import { UploadJsonFileButton } from "../components/UploadJsonFileButton";
 import { JsonData } from "../components/UploadJsonFileButton/UploadJsonFileButton";
+import { IgniteMatrix } from "../components/IgniteMatrix/IgniteMatrix";
 
 const Content = styled.div`
   display: flex;
@@ -27,11 +28,22 @@ const Button = styled.button``;
 const Home: NextPage = () => {
   const [jsonData, setJsonData] = useState<JsonData | undefined>(undefined);
 
-  const createSuppliersMutation =
-    api.supplier.createManySuppliers.useMutation();
+  const trpcContext = trpc.useContext();
+
+  const createSuppliersMutation = api.supplier.createManySuppliers.useMutation({
+    onSuccess() {
+      // invalidate query
+      trpcContext.supplier.getAllValidSuppliers.invalidate();
+    },
+  });
 
   const deleteAllSuppliersMutation =
-    api.supplier.deleteAllSuppliers.useMutation();
+    api.supplier.deleteAllSuppliers.useMutation({
+      onSuccess() {
+        // invalidate query
+        trpcContext.supplier.getAllValidSuppliers.invalidate();
+      },
+    });
 
   const handleCreateSuppliers = useCallback(async () => {
     if (!jsonData) return;
@@ -41,8 +53,8 @@ const Home: NextPage = () => {
         return {
           name: item.key,
           ebitMargin: item.totals[0] ?? undefined,
-          revenue: item.totals[1] ?? undefined,
-          profit: item.totals[2] ?? undefined,
+          shareOfWallet: item.totals[1] ?? undefined,
+          spend: item.totals[2] ?? undefined,
         };
       })
     );
@@ -63,7 +75,7 @@ const Home: NextPage = () => {
       <Content>
         <h1>Ignite Matrix</h1>
 
-        <div>Ignite matrix placeholder</div>
+        <IgniteMatrix />
 
         <ButtonWrapper>
           <UploadJsonFileButton setJsonData={setJsonData} />
