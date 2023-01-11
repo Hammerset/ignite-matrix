@@ -7,9 +7,15 @@ export const supplierRouter = createTRPCRouter({
   getAllValidSuppliers: publicProcedure.query(({ ctx }) => {
     const suppliers = ctx.prisma.supplier.findMany({
       where: {
-        ebitMargin: { not: null },
-        shareOfWallet: { not: null },
-        spend: { not: null },
+        shareOfWallet: {
+          not: null,
+        },
+        spend: {
+          not: null,
+        },
+        ebitMargin: {
+          not: null,
+        },
       },
     });
     return suppliers;
