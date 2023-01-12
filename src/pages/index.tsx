@@ -5,7 +5,7 @@ import { api, trpc } from "../utils/api";
 import styled from "styled-components";
 import { useCallback, useState } from "react";
 import { UploadJsonFileButton } from "../components/UploadJsonFileButton";
-import { JsonData } from "../components/UploadJsonFileButton/UploadJsonFileButton";
+import type { JsonData } from "../components/UploadJsonFileButton/UploadJsonFileButton";
 import { IgniteMatrix } from "../components/IgniteMatrix/IgniteMatrix";
 
 const Content = styled.div`
@@ -34,7 +34,9 @@ const Home: NextPage = () => {
   const createSuppliersMutation = api.supplier.createManySuppliers.useMutation({
     onSuccess() {
       // invalidate query
-      trpcContext.supplier.getAllValidSuppliers.invalidate();
+      trpcContext.supplier.getAllValidSuppliers.invalidate().catch((err) => {
+        console.error(err);
+      });
     },
   });
 
@@ -42,11 +44,13 @@ const Home: NextPage = () => {
     api.supplier.deleteAllSuppliers.useMutation({
       onSuccess() {
         // invalidate query
-        trpcContext.supplier.getAllValidSuppliers.invalidate();
+        trpcContext.supplier.getAllValidSuppliers.invalidate().catch((err) => {
+          console.error(err);
+        });
       },
     });
 
-  const handleCreateSuppliers = useCallback(async () => {
+  const handleCreateSuppliers = useCallback(() => {
     if (!jsonData) return;
 
     createSuppliersMutation.mutate(
@@ -61,7 +65,7 @@ const Home: NextPage = () => {
     );
   }, [jsonData, createSuppliersMutation]);
 
-  const handleDeleteAllSuppliers = useCallback(async () => {
+  const handleDeleteAllSuppliers = useCallback(() => {
     deleteAllSuppliersMutation.mutate();
   }, [deleteAllSuppliersMutation]);
 

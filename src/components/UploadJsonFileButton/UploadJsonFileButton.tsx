@@ -1,7 +1,9 @@
 // React component for upload file button
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
+
+import type { ChangeEvent } from "react";
 
 const jsonSchema = z.object({
   columns: z.array(
@@ -62,14 +64,13 @@ export const UploadJsonFileButton: React.FC<UploadFileButtonProps> = ({
         return;
       }
 
-      const jsonData = JSON.parse(
-        Buffer.from(base64JsonData, "base64").toString("utf-8")
+      const parsedJson = jsonSchema.parse(
+        JSON.parse(Buffer.from(base64JsonData, "base64").toString("utf-8"))
       );
-      const parsedJson = jsonSchema.parse(jsonData);
-      console.log("parsedJson", parsedJson);
+
       setJsonData(parsedJson);
     };
-  }, [file]);
+  }, [file, setJsonData]);
 
   return (
     <div>

@@ -16,11 +16,8 @@
  * processing a request
  *
  */
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 
 import { prisma } from "../db";
-
-type CreateContextOptions = Record<string, never>;
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use
@@ -31,7 +28,7 @@ type CreateContextOptions = Record<string, never>;
  * - trpc's `createSSGHelpers` where we don't have req/res
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
-const createInnerTRPCContext = (_opts: CreateContextOptions) => {
+const createInnerTRPCContext = () => {
   return {
     prisma,
   };
@@ -42,8 +39,8 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  * process every request that goes through your tRPC endpoint
  * @link https://trpc.io/docs/context
  */
-export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({});
+export const createTRPCContext = () => {
+  return createInnerTRPCContext();
 };
 
 /**

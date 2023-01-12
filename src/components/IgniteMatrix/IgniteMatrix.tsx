@@ -13,8 +13,7 @@ import type { BubbleDataPoint, ChartDataset } from "chart.js";
 import { Bubble } from "react-chartjs-2";
 
 import { useMemo } from "react";
-import { api } from "../../utils/api";
-import { Supplier } from "@prisma/client";
+import type { Supplier } from "@prisma/client";
 
 ChartJS.register(
   RadialLinearScale,
