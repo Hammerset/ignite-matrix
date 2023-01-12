@@ -16,6 +16,16 @@ const Content = styled.div`
 
   height: 100%;
   width: 100%;
+
+  max-width: 1200px;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 `;
 
 const ButtonWrapper = styled.div`
@@ -76,26 +86,30 @@ const Home: NextPage = () => {
         <meta name="description" content="Ignite Matrix" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Wrapper>
+        <Content>
+          <h1>Ignite Matrix</h1>
 
-      <Content>
-        <h1>Ignite Matrix</h1>
+          <IgniteMatrix suppliers={suppliers ?? []} />
 
-        <IgniteMatrix suppliers={suppliers ?? []} />
+          <ButtonWrapper>
+            <UploadJsonFileButton setJsonData={setJsonData} />
+            <Button
+              disabled={!jsonData}
+              onClick={() => handleCreateSuppliers()}
+            >
+              Create Suppliers
+            </Button>
 
-        <ButtonWrapper>
-          <UploadJsonFileButton setJsonData={setJsonData} />
-          <Button disabled={!jsonData} onClick={() => handleCreateSuppliers()}>
-            Create Suppliers
-          </Button>
-
-          <Button
-            disabled={!suppliers?.length}
-            onClick={() => handleDeleteAllSuppliers()}
-          >
-            Delete all suppliers
-          </Button>
-        </ButtonWrapper>
-      </Content>
+            <Button
+              disabled={!suppliers?.length}
+              onClick={() => handleDeleteAllSuppliers()}
+            >
+              Delete all suppliers
+            </Button>
+          </ButtonWrapper>
+        </Content>
+      </Wrapper>
     </>
   );
 };
