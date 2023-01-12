@@ -27,8 +27,9 @@ const Button = styled.button``;
 
 const Home: NextPage = () => {
   const [jsonData, setJsonData] = useState<JsonData | undefined>(undefined);
-
   const trpcContext = trpc.useContext();
+
+  const { data: suppliers } = api.supplier.getAllValidSuppliers.useQuery();
 
   const createSuppliersMutation = api.supplier.createManySuppliers.useMutation({
     onSuccess() {
@@ -75,7 +76,7 @@ const Home: NextPage = () => {
       <Content>
         <h1>Ignite Matrix</h1>
 
-        <IgniteMatrix />
+        <IgniteMatrix suppliers={suppliers ?? []} />
 
         <ButtonWrapper>
           <UploadJsonFileButton setJsonData={setJsonData} />
@@ -83,7 +84,10 @@ const Home: NextPage = () => {
             Create Suppliers
           </Button>
 
-          <Button onClick={() => handleDeleteAllSuppliers()}>
+          <Button
+            disabled={!suppliers?.length}
+            onClick={() => handleDeleteAllSuppliers()}
+          >
             Delete all suppliers
           </Button>
         </ButtonWrapper>

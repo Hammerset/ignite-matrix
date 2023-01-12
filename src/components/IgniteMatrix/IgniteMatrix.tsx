@@ -14,6 +14,7 @@ import { Bubble } from "react-chartjs-2";
 
 import { useMemo } from "react";
 import { api } from "../../utils/api";
+import { Supplier } from "@prisma/client";
 
 ChartJS.register(
   RadialLinearScale,
@@ -34,22 +35,20 @@ const normalizeData = (
   return ((spend - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 };
 
-interface IgniteMatrixProps {}
+interface IgniteMatrixProps {
+  suppliers: Supplier[];
+}
 
-export const IgniteMatrix: React.FC<IgniteMatrixProps> = () => {
-  const { data: suppliersData } = api.supplier.getAllValidSuppliers.useQuery();
-
+export const IgniteMatrix: React.FC<IgniteMatrixProps> = ({ suppliers }) => {
   const chartData: ChartDataset<"bubble", BubbleDataPoint[]>[] = useMemo(() => {
-    if (!suppliersData) return [];
-
     const maxSpend = Math.max(
-      ...suppliersData.map((supplier) => supplier.spend as number)
+      ...suppliers.map((supplier) => supplier.spend as number)
     );
     const minSpend = Math.min(
-      ...suppliersData.map((supplier) => supplier.spend as number)
+      ...suppliers.map((supplier) => supplier.spend as number)
     );
 
-    return suppliersData.map((supplier) => {
+    return suppliers.map((supplier) => {
       return {
         label: supplier.name,
         backgroundColor: "rgba(239, 13, 62, 0.5)",
@@ -68,7 +67,7 @@ export const IgniteMatrix: React.FC<IgniteMatrixProps> = () => {
         ],
       };
     });
-  }, [suppliersData]);
+  }, [suppliers]);
 
   return (
     <Bubble
@@ -76,12 +75,10 @@ export const IgniteMatrix: React.FC<IgniteMatrixProps> = () => {
         datasets: chartData,
       }}
       options={{
-        maintainAspectRatio: true,
         responsive: true,
 
         scales: {
           x: { type: "logarithmic" },
-          r: { type: "logarithmic" },
         },
 
         plugins: {
@@ -98,9 +95,9 @@ export const IgniteMatrix: React.FC<IgniteMatrixProps> = () => {
               beforeLabel(tooltipItem) {
                 const index = tooltipItem.datasetIndex;
                 const shareOfWallet =
-                  Number(suppliersData?.[index]?.shareOfWallet) * 100;
-                const ebitMargin = Number(suppliersData?.[index]?.ebitMargin);
-                const spend = Number(suppliersData?.[index]?.spend);
+                  Number(suppliers?.[index]?.shareOfWallet) * 100;
+                const ebitMargin = Number(suppliers?.[index]?.ebitMargin);
+                const spend = Number(suppliers?.[index]?.spend);
                 return `EBIT margin: ${ebitMargin.toFixed(
                   2
                 )}\nShare of wallet: ${shareOfWallet.toFixed(
