@@ -78,7 +78,14 @@ export const IgniteMatrix: React.FC<IgniteMatrixProps> = ({ suppliers }) => {
         responsive: true,
 
         scales: {
-          x: { type: "logarithmic" },
+          x: {
+            type: "logarithmic",
+            title: { display: true, text: "Share of wallet" },
+          },
+          y: {
+            type: "linear",
+            title: { display: true, text: "EBIT margin (%)" },
+          },
         },
 
         plugins: {
