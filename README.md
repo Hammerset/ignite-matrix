@@ -1,28 +1,38 @@
-# Create T3 App
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+# Ignite matrix
 
-## What's next? How do I make an app with this?
+This repository contains the case "Ignite Matrix".
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Installation
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+To install the required packages simply run
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+```
+yarn install;
+```
 
-## Learn More
+To run this project locally you need to have PostgreSQL installed and a database running.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+[install PostgreSQL](https://www.postgresql.org/download/).
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+Open then `.env` and replace the DATABASE_URL with:
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+```
+DATABASE_URL=postgres://<yourusername>:<yourpassword>@localhost:5432/ignite-matrix
+```
 
-## How do I deploy this?
+Then run the migrations to set up the database tables:
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+```
+npx prisma migrate --dev
+```
+
+## Running the program
+
+```
+yarn dev
+```
+
+## Example data
+
+[Example data](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/f6842995-6068-45b3-8ba4-705e80c4faed/data.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230112%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230112T202708Z&X-Amz-Expires=86400&X-Amz-Signature=c29606839c596066fc728be35f2d6067ad94229dacaf6c5a43434287dc51868c&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22data.json%22&x-id=GetObject
