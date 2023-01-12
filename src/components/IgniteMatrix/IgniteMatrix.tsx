@@ -80,11 +80,23 @@ export const IgniteMatrix: React.FC<IgniteMatrixProps> = ({ suppliers }) => {
         scales: {
           x: {
             type: "logarithmic",
-            title: { display: true, text: "Share of wallet" },
+            title: { display: true, text: "Share of wallet (%)" },
+            ticks: {
+              callback(value) {
+                return `${value}%`;
+              },
+              maxTicksLimit: 10,
+            },
           },
           y: {
             type: "linear",
             title: { display: true, text: "EBIT margin (%)" },
+            ticks: {
+              callback(value) {
+                return `${Number(value) * 100}%`;
+              },
+              maxTicksLimit: 10,
+            },
           },
         },
 
@@ -103,13 +115,13 @@ export const IgniteMatrix: React.FC<IgniteMatrixProps> = ({ suppliers }) => {
                 const index = tooltipItem.datasetIndex;
                 const shareOfWallet =
                   Number(suppliers?.[index]?.shareOfWallet) * 100;
-                const ebitMargin = Number(suppliers?.[index]?.ebitMargin);
+                const ebitMargin = Number(suppliers?.[index]?.ebitMargin) * 100;
                 const spend = Number(suppliers?.[index]?.spend);
                 return `EBIT margin: ${ebitMargin.toFixed(
                   2
-                )}\nShare of wallet: ${shareOfWallet.toFixed(
+                )} %\nShare of wallet: ${shareOfWallet.toFixed(
                   2
-                )}\nSpend: ${spend.toFixed(2)}`;
+                )} %\nSpend: ${spend.toFixed(2)} $`;
               },
               label() {
                 return "";
